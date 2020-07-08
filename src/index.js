@@ -1,10 +1,14 @@
 // localhost command 
 // npm install -g http-server
-// http-server
+// http-server --watch index.html
+
 
 // page loads at cover
 document.addEventListener("DOMContentLoaded", (e) => {
     let mainStyleSheet = document.querySelector("#main-style")
+
+    const now = moment()
+    console.log(now);
     
     
 // EVENT HANDLERS
@@ -60,10 +64,9 @@ document.addEventListener("DOMContentLoaded", (e) => {
             } else if (e.target.className === "set-wake-up-time-form") {
                 e.preventDefault()
                 const form = e.target
-                
-                
-
-                
+                disableForm()
+                const hour = form.value.hour
+                const minute = form.value.minute
             }
 
         })
@@ -201,6 +204,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
                             <label for="inputConfirmPassword" class="sr-only">Confirm Password</label>
                             <input name="confirmPassword" type="password" id="inputConfirmPassword" class="form-control" placeholder="Confirm Password" required><br>
                             <button id="registerButton" class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+                            <p class="signin-link mt-5 mb-3 text-muted">Already a user? Click here to get back to sign-in</p><br>
                             <p class="mt-5 mb-3 text-muted">&copy; 2020 Vivify</p>
                                 `
         body.prepend(newForm)
@@ -372,7 +376,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
                     <main>
                         <div class="main">
-                            <h1 id="clock">Clock</h1>
+                            <h1 id="clock"></h1>
                            
                         </div>
                     </main>
@@ -389,22 +393,35 @@ document.addEventListener("DOMContentLoaded", (e) => {
         // clockH1.remove()
         window.clearTimeout(clockTimeout)
         const time = new Date
-
+       
         const div = document.querySelector("div.main")
         div.id = "form-div"
         div.innerHTML = `
+               
                 <form class="set-wake-up-time-form">
-                    <label for="alarm">Alarm (date and time):</label>
-                    <input type="datetime-local" id="alarm" name="alarm" min="2017-06-01T08:30" max="2017-06-30T16:30>
-                    <input type="submit" value="Submit">
+                    <label for="hour">Set Hour</label>
+                    <input class="hour-input" type="number" name="hour">
+                    <label for="minute">Set Minute</label>
+                    <input class="minute-input" type="number" name="minute">
+                    <input id="set-alarm-submit" type="submit">
                 </form>
                 `
         // moment.utc(1234567890000).local()
     }
     
+
+    const disableForm = () => {
+        const hourInputField = document.querySelector("input.hour-input")
+        const minuteInputField = document.querySelector("input.minute-input")
+        const submitButton = document.querySelector("input#set-alarm-submit")
+        hourInputField.disabled = true
+        minuteInputField.disabled = true
+        submitButton.disabled = true
+    }   
+
     const renderClockDiv = () => {
         const div = document.querySelector("div.main")
-        div.innerHTML = `<h1 id="clock">Clock</h1>`
+        div.innerHTML = `<h1 id="clock"></h1>`
         div.id = "clock-div"
         currentTime()
     }
@@ -434,7 +451,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
                         <span class="text-success" id="seconds">5</span> Seconds:</p>
                         <h2 class="display-2 mb-5" id="current-word">hello</h2>
                         <input type="text" class="form-control form-control-lg" placeholder="Start typing..." id="word-input" autofocus>
-                        <input type="submit" name="submit" value="OK" class="submit" autofocus>
+                        <input id="game-button" type="submit" name="submit" value="OK" class="submit game-button" autofocus>
                         <h4 class="mt-3" id="message"></h4>
                 ​
                         <div class="row mt-5">
@@ -467,6 +484,117 @@ document.addEventListener("DOMContentLoaded", (e) => {
         init()
     }
     
+    function init() {
+        const currentLevel = 6;
+        let time = currentLevel;
+        let score = 0;
+        let isPlaying;
+
+        const wordInput = document.querySelector('#word-input');
+        const currentWord = document.querySelector('#current-word');
+        const scoreDisplay = document.querySelector('#score');
+        const timeDisplay = document.querySelector('#time');
+        const message = document.querySelector('#message');
+        const seconds = document.querySelector('#seconds');
+        const okButton = document.querySelector("input#game-button")
+        let myVar = setInterval(countdown, 1000);
+        const words = [
+            'hat',
+            'river',
+            'lucky',
+            'statue',
+            'generate',
+            'stubborn',
+            'cocktail',
+            'runaway',
+            'joke',
+            'developer',
+            'establishment',
+            'hero',
+            'javascript',
+            'nutrition',
+            'revolver',
+            'echo',
+            'siblings',
+            'investigate',
+            'horrendous',
+            'symptom',
+            'laughter',
+            'magic',
+            'master',
+            'space',
+            'definition'
+        ];
+
+        seconds.innerHTML = currentLevel;
+        showWord(words);
+        okButton.addEventListener('click', (e) => {
+            if (matchWords()) {
+                isPlaying = true;
+                time = currentLevel - 1;
+                showWord(words);
+                wordInput.value = '';
+                //score++;
+            }
+        })
+        
+        
+        myVar
+    
+
+    // function startMatch() {
+    //     if (matchWords()) {
+    //         isPlaying = true;
+    //         time = currentLevel - 1;
+    //         showWord(words);
+    //         wordInput.value = '';
+    //         //score++;
+    //     }
+    // }
+
+    function matchWords() {
+        if (wordInput.value === currentWord.innerHTML && score >= 4) {
+            message.innerHTML = 'Well done!';
+            scoreDisplay.innerHTML = score
+            let timer = document.querySelector("span#time")
+            timer.innerHTML = `<div style="display:inline-block;border:3px solid rgb(116, 198, 65);border-radius:5px;padding:10px;background:linear-gradient(to bottom,rgb(123, 222, 90),rgb(101, 243, 103));color:">Dismiss Alarm</div>`
+            myStopFunction()
+            return false;
+        } else if (wordInput.value === currentWord.innerHTML) {
+            message.innerHTML = 'One more!';
+            score++;
+            scoreDisplay.innerHTML = score
+            return true
+        } else {
+            message.innerHTML = '';
+            score--;
+            return true;
+        }
+    }
+    function myStopFunction() {
+        clearInterval(myVar);
+    }
+
+    function showWord(words) {
+        const randIndex = Math.floor(Math.random() * words.length);
+        currentWord.innerHTML = words[randIndex];
+    }
+
+    function countdown() {
+        if (time > 0) {
+            time--;
+        } else if (time === 0) {
+            isPlaying = true;
+            showWord(words);
+            time = currentLevel
+
+        }
+        timeDisplay.innerHTML = time;
+    }
+}
+
+
+
 
 
     // currentTime();

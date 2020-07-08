@@ -1,0 +1,29 @@
+{
+  "name": "vivify--frontend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index_tests.js",
+  "dependencies": {
+    "@popperjs/core": "^2.4.4",
+    "bootstrap": "^4.5.0",
+    "googleapis": "^39.2.0",
+    "jquery": "^3.0.0",
+    "moment": "^2.27.0",
+    "requirejs": "^2.3.6",
+    "webcam-easy": "^1.0.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emotionalproof/vivify.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/emotionalproof/vivify/issues"
+  },
+  "homepage": "https://github.com/emotionalproof/vivify#readme"
+}
