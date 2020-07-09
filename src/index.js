@@ -7,8 +7,109 @@
 document.addEventListener("DOMContentLoaded", (e) => {
     let mainStyleSheet = document.querySelector("#main-style")
 
-    const now = moment()
-    console.log(now);
+
+
+    const currentTimeVar = moment()
+    console.log(currentTimeVar.toDate().getFullYear());
+    console.log(currentTimeVar.toDate().getMonth());
+    console.log(currentTimeVar.add(1, 'd').toDate().getDate());
+
+    const currentMoment = moment()
+    console.log(currentMoment);
+    
+    const currentTimeObj = moment().toObject()
+    console.log(currentTimeObj.years)
+    console.log(currentTimeObj.months)
+    console.log(currentTimeObj.months)
+   
+    
+
+
+    // const now = moment()
+    // const textNow = `${now}`
+    // const newNow = moment(textNow)
+    // const nowObj = newNow.toObject()
+    // console.log("object hours", nowObj.hours);
+    
+    // console.log(now);
+    // console.log(now.toDate().getHours());
+    
+    // console.log(textNow.getHours());
+    //  moment()
+            // current time
+            // this is an object
+    // const textDate = `${moment()}` 
+            // converts to string to send to db
+    // moment(textDate)  
+            // can plug this right back into now after we pull from db. this creates and object again
+    // moment(textDate)._d 
+            // is an object
+    // moment(textDate)._i 
+            // is a string
+    // on the object moment(textDate)._d OR .toDate we can call functions to get specific date/time attributes
+            // getHours()
+            // getMinutes()
+            // getDate()
+            // getMonth() (january is 0)
+            // getFullYear()
+            // OR
+            // get('year')
+            // get('month')
+            // get('date')
+            // get('hour')
+            // get('minute')
+    // use .year(2020), .month(02), .date(21), .hours(22), .minutes(45) on moment() or a variable set equal to moment()
+            //  to change date/time attribute
+            // OR
+            // set('year', 2013)
+    // moment().add(7, 'days');
+            // adds 7 days.  can also do .add(7, 'd')
+            // shorthand: y M d h m 
+    // moment().subtract(8, 'days')
+    //  moment().toArray
+    // moment().toObject
+
+    // .format()  returns string
+    // moment().format();                                // "2014-09-08T08:02:17-05:00" (ISO 8601, no fractional seconds)
+    // moment().format("dddd, MMMM Do YYYY, h:mm:ss a"); // "Sunday, February 14th 2010, 3:25:50 pm"
+    // moment().format("ddd, hA");                       // "Sun, 3PM"
+    // moment().format("[Today is] dddd");               // "Today is Sunday"
+
+    // MM two digit month
+    // DD two digit day of month
+    //  YYYY
+    // 	HH two digit military time 
+    // hh two digit non-military
+    //  mm two digit seconds
+    //  A AM/PM   a am/pm
+    // LLL   September 4, 1986 8:30 PM
+
+
+    // const sleepTime = moment([2020, 6, 8, 23, 30])
+    // const awakeTime = moment([2020, 6, 9, 6, 30])
+    // laterDate.diff(earlierDate, "format")
+    // const difference = awakeTime.diff(sleepTime, "minutes", true)  adding true turns result into decimal
+    // console.log(difference);
+    // const diffMoment = moment(difference)
+    // console.log(diffMoment);
+
+    
+    // var a = moment([2007, 0, 28]);
+    // var b = moment([2007, 0, 29]);
+    //  // "a day ago"
+    // console.log(moment([2007, 0, 29]).fromNow())
+    // // moment().calendar();
+    
+    
+    // const sleepTime = moment([2020, 6, 8, 23, 30])
+    // const awakeTime = moment([2020, 6, 9, 6, 15])
+    // const difference = awakeTime.diff(sleepTime, "hours", true)
+    // console.log(difference);
+    // const diffMoment = moment(difference)
+    // console.log(diffMoment);
+    
+
+    
     
     
 // EVENT HANDLERS
@@ -67,10 +168,24 @@ document.addEventListener("DOMContentLoaded", (e) => {
                 disableForm()
                 const hour = form.value.hour
                 const minute = form.value.minute
+                const currentTime = moment().toObject
+                
             }
 
         })
     }
+
+    const changeHandler = () => {
+        document.addEventListener("change", (e) => {
+            if(e.target.id === "clock"){
+
+                console.log("boom");
+                
+                // alarmAlert()
+            }
+        })
+    }
+
 
 
 // SIGN-IN
@@ -600,6 +715,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
     // currentTime();
     clickHandler()
     submitHandler()
+    changeHandler()
     // checkCookie()
 })
 
