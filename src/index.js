@@ -3,116 +3,22 @@
 // http-server --watch index.html
 
 
+
+// ANCHOR top
 // page loads at cover
 document.addEventListener("DOMContentLoaded", (e) => {
     let mainStyleSheet = document.querySelector("#main-style")
-
-
-
-    const currentTimeVar = moment()
-    console.log(currentTimeVar.toDate().getFullYear());
-    console.log(currentTimeVar.toDate().getMonth());
-    console.log(currentTimeVar.add(1, 'd').toDate().getDate());
-
-    const currentMoment = moment()
-    console.log(currentMoment);
+    let alarmTomorrow
     
-    const currentTimeObj = moment().toObject()
-    console.log(currentTimeObj.years)
-    console.log(currentTimeObj.months)
-    console.log(currentTimeObj.months)
-   
+    // const currentTimeObj = moment().toObject()
+    // console.log(currentTimeObj);
+    
+    // currentTimeObj.date += 1
+
+    // console.log(currentTimeObj);
     
 
-
-    // const now = moment()
-    // const textNow = `${now}`
-    // const newNow = moment(textNow)
-    // const nowObj = newNow.toObject()
-    // console.log("object hours", nowObj.hours);
-    
-    // console.log(now);
-    // console.log(now.toDate().getHours());
-    
-    // console.log(textNow.getHours());
-    //  moment()
-            // current time
-            // this is an object
-    // const textDate = `${moment()}` 
-            // converts to string to send to db
-    // moment(textDate)  
-            // can plug this right back into now after we pull from db. this creates and object again
-    // moment(textDate)._d 
-            // is an object
-    // moment(textDate)._i 
-            // is a string
-    // on the object moment(textDate)._d OR .toDate we can call functions to get specific date/time attributes
-            // getHours()
-            // getMinutes()
-            // getDate()
-            // getMonth() (january is 0)
-            // getFullYear()
-            // OR
-            // get('year')
-            // get('month')
-            // get('date')
-            // get('hour')
-            // get('minute')
-    // use .year(2020), .month(02), .date(21), .hours(22), .minutes(45) on moment() or a variable set equal to moment()
-            //  to change date/time attribute
-            // OR
-            // set('year', 2013)
-    // moment().add(7, 'days');
-            // adds 7 days.  can also do .add(7, 'd')
-            // shorthand: y M d h m 
-    // moment().subtract(8, 'days')
-    //  moment().toArray
-    // moment().toObject
-
-    // .format()  returns string
-    // moment().format();                                // "2014-09-08T08:02:17-05:00" (ISO 8601, no fractional seconds)
-    // moment().format("dddd, MMMM Do YYYY, h:mm:ss a"); // "Sunday, February 14th 2010, 3:25:50 pm"
-    // moment().format("ddd, hA");                       // "Sun, 3PM"
-    // moment().format("[Today is] dddd");               // "Today is Sunday"
-
-    // MM two digit month
-    // DD two digit day of month
-    //  YYYY
-    // 	HH two digit military time 
-    // hh two digit non-military
-    //  mm two digit seconds
-    //  A AM/PM   a am/pm
-    // LLL   September 4, 1986 8:30 PM
-
-
-    // const sleepTime = moment([2020, 6, 8, 23, 30])
-    // const awakeTime = moment([2020, 6, 9, 6, 30])
-    // laterDate.diff(earlierDate, "format")
-    // const difference = awakeTime.diff(sleepTime, "minutes", true)  adding true turns result into decimal
-    // console.log(difference);
-    // const diffMoment = moment(difference)
-    // console.log(diffMoment);
-
-    
-    // var a = moment([2007, 0, 28]);
-    // var b = moment([2007, 0, 29]);
-    //  // "a day ago"
-    // console.log(moment([2007, 0, 29]).fromNow())
-    // // moment().calendar();
-    
-    
-    // const sleepTime = moment([2020, 6, 8, 23, 30])
-    // const awakeTime = moment([2020, 6, 9, 6, 15])
-    // const difference = awakeTime.diff(sleepTime, "hours", true)
-    // console.log(difference);
-    // const diffMoment = moment(difference)
-    // console.log(diffMoment);
-    
-
-    
-    
-    
-// EVENT HANDLERS
+// ANCHOR EVENT HANDLERS
     const clickHandler = () => {
         document.addEventListener("click", (e) => {
             if (e.target.id === "cover-container"){
@@ -131,10 +37,10 @@ document.addEventListener("DOMContentLoaded", (e) => {
                 e.preventDefault()
                 addGameScript()
                 renderGame()
-            }
+            } else if (e.targ)
         })
     } 
-
+// ANCHOR submit handler
     const submitHandler = () => {
         document.addEventListener("submit", (e) => {
             if (e.target.className === "form-signin") {
@@ -162,19 +68,30 @@ document.addEventListener("DOMContentLoaded", (e) => {
                 }
                 verifyRegistrationUsername(newUserObj)
 
-            } else if (e.target.className === "set-wake-up-time-form") {
+            } else if (e.target.className === "set-wake-up-time-form h3 mb-3 font-weight-normal") {
                 e.preventDefault()
                 const form = e.target
-                disableForm()
-                const hour = form.value.hour
-                const minute = form.value.minute
-                const currentTime = moment().toObject
+                const currentTimeObj = moment().toObject()
+                currentTimeObj.date = parseInt(currentTimeObj.date + 1)
+                currentTimeObj.hours = parseInt(form.hour.value)
+                currentTimeObj.minutes = parseInt(form.minute.value)
                 
+                alarmTomorrow = currentTimeObj
+                const newMoment = moment(currentTimeObj)
+                
+
+                const alarmTimeString = newMoment.toString()
+                console.log(alarmTimeString);
+                
+
+                createMorningObj(alarmTimeString)
+                // disableForm()
+                addLoadingSpinner()
             }
 
         })
     }
-
+// ANCHOR change handler
     const changeHandler = () => {
         document.addEventListener("change", (e) => {
             if(e.target.id === "clock"){
@@ -188,7 +105,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
 
 
-// SIGN-IN
+// ANCHOR SIGN-IN
 
     // after clicking the cover screen, user will be taken to sign-in page
     const renderSignIn = () => {
@@ -258,7 +175,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
         return div
     }
 
-//COOKIES
+//ANCHOR COOKIES
     const setCookie = (cookieName, cookieValue) => {
         let d = new Date();
         d.setTime(d.getTime() + (7 * 24 * 60 * 60 * 1000));
@@ -296,7 +213,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
     // }
 
 
-// REGISTRATION
+// ANCHOR REGISTRATION
     const renderRegister = () => {
         const form = document.querySelector('form')
         const body = document.querySelector("body")
@@ -371,7 +288,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
             postNewUser(newUserObj)
         }
     }
-
+// ANCHOR post new user
     const postNewUser = newUserObj => {
         return fetch("http://localhost:3000/api/v1/users/", {
             method: "POST",
@@ -387,7 +304,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
         })
     }
     
-  
+//ANCHOR CLOCK
     const currentTime = () => {
         let date = new Date() //create a new date for the current time/date
         let hour = date.getHours();
@@ -402,6 +319,31 @@ document.addEventListener("DOMContentLoaded", (e) => {
         }
 
         renderClock(clockObj)
+
+        if (alarmTomorrow !== undefined){
+            checkAlarm()
+        }
+    }
+
+    const checkAlarm = () => {
+        const currentTimeObj = moment().toObject()
+        console.log(currentTimeObj.hours);
+        console.log(alarmTomorrow.hours);
+        if (currentTimeObj.hours === alarmTomorrow.hours && currentTimeObj.minutes === alarmTomorrow.minutes) {
+            renderAlarm()   
+        }
+    }
+
+    renderAlarm = () => {
+        const main = document.querySelector("main")
+        const div = document.createElement('div')
+        div.className = "w3-container w3-center w3-animate-zoom"
+        div.innerHTML = "<h1>WAKE UP TIME!!!</h1>"
+        main.append(div)
+        window.setTimeout((e) => {
+            div.remove()}, 2 * 1000
+        )
+        renderGame()
     }
 
     const updateTime = timeAttr => {
@@ -440,7 +382,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
             currentTime()
         }, 1000)
     }
-
+// ANCHOR Dashboard
     const renderDashboard = userObj => {
         currentTime()
         const style = document.querySelector("style")
@@ -477,7 +419,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
                                 <a id="home-link" class="nav-link" href="#" tabindex="-1" aria-disabled="true">Clock<span class="sr-only">(current)</span></a>
                             </li>
                             <li class="nav-item nav-set-alarm-link">
-                                <a id="set-alarm-link" class="nav-link" href="#" tabindex="-1" aria-disabled="true">Set Alarm</a>
+                                <a id="set-alarm-link" data-disabled="false" class="nav-link" href="#" tabindex="-1" aria-disabled="true">Set Alarm</a>
                             </li>
                             <li class="nav-item nav-sleep-stats-link">
                                 <a id="sleep-stats" class="nav-link" href="#" tabindex="-1" aria-disabled="true">Sleep Stats</a>
@@ -502,38 +444,96 @@ document.addEventListener("DOMContentLoaded", (e) => {
                         `
         console.log(userObj);
     }
-
+// ANCHOR set alarm
     const renderSetAlarm = () => {
         // const clockH1 = document.querySelector("h1#clock")
         // clockH1.remove()
-        window.clearTimeout(clockTimeout)
-        const time = new Date
-       
+        // window.clearTimeout(clockTimeout)
+        // const time = new Date
         const div = document.querySelector("div.main")
         div.id = "form-div"
         div.innerHTML = `
-               
-                <form class="set-wake-up-time-form">
-                    <label for="hour">Set Hour</label>
-                    <input class="hour-input" type="number" name="hour">
-                    <label for="minute">Set Minute</label>
-                    <input class="minute-input" type="number" name="minute">
-                    <input id="set-alarm-submit" type="submit">
+                <form class="set-wake-up-time-form h3 mb-3 font-weight-normal">
+                    <label class="sr-only" for="hour">Set Hour</label>
+                    <input class="hour-input alarm-set" id="hour" type="number" name="hour" min="0" max="24" placeholder="Wake-Up Hour" required autofocus><br>
+                    <label class="sr-only" for="minute">Set Minute</label><br>
+                    <input class="minute-input alarm-set" id="minute" type="number" name="minute" min="0" max="60" placeholder="Wake-Up Minute" required autofocus><br><br><br>
+                    <button class="btn btn-lg btn-primary btn-block" id="set-alarm-submit" type="submit">Set Alarm</button><br><br>
                 </form>
+                <h1 id="clock" hidden></h1>
                 `
-        // moment.utc(1234567890000).local()
+    }
+
+    const addLoadingSpinner = () => {
+        const button = document.querySelector("button#set-alarm-submit")
+        button.className = "btn btn-primary"
+        button.type = "button"
+        button.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Loading...`
+        window.setTimeout(replaceSubmitButton, 2 * 1000)
+    }
+
+    const replaceSubmitButton = () => {
+        const button = document.querySelector("button#set-alarm-submit")
+        button.className = "btn btn-lg btn-primary btn-block"
+        button.type = "submit"
+        button.textContent = "Set Alarm"
+        renderClockDiv()
+    }
+
+// ANCHOR create morning
+    const createMorningObj = alarmObjString => {
+        const body = document.querySelector("body")
+        const userId = parseInt(body.id)
+        const morningObject = {}
+        morningObject.alarm_time = alarmObjString
+        morningObject.user_id = userId
+        postNewMorning(morningObject)
     }
     
+    const postNewMorning = morningObject => {
+        return fetch("http://localhost:3000/api/v1/mornings/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body:   JSON.stringify(morningObject)
+        })
+        .then(resp => resp.json())
+        .then(newMorningObj => {
+            renderMorningIdToNav(newMorningObj)
+        })
+    }
 
-    const disableForm = () => {
-        const hourInputField = document.querySelector("input.hour-input")
-        const minuteInputField = document.querySelector("input.minute-input")
-        const submitButton = document.querySelector("input#set-alarm-submit")
-        hourInputField.disabled = true
-        minuteInputField.disabled = true
-        submitButton.disabled = true
-    }   
+    const renderMorningIdToNav = morningObj => {
+        const nav = document.querySelector('nav')
+        nav.id = morningObj.id
+    }
 
+    // const disableForm = () => {
+    //     const alarmNavlink = document.querySelector("a#set-alarm-link")
+    //     alarmNavlink.remove()
+    //     const li = document.createElement('li')
+    //     li.className = "nav-item nav-set-alarm-link"
+    //     li.innerHTML =  `
+    //             <a id="set-alarm-link" data-disabled="false" class="nav-link" href="#" tabindex="-1" aria-disabled="true">Set Alarm</a>
+    //                     `
+    //     const ul = document.querySelector("ul.navbar-nav")
+    //     const adjacentElement = document.querySelector("li.nav-sleep-stats-link")
+    //     form.insertAfter(divAlert, signInButton)
+    //     const hourInputField = document.querySelector("input#hour")
+    //     const minuteInputField = document.querySelector("input#minute")
+    //     const submitButton = document.querySelector("button#set-alarm-submit")
+    //     hourInputField.disabled = true
+    //     minuteInputField.disabled = true
+    //     submitButton.disabled = true
+    // }   
+
+
+
+
+
+// ANCHOR clock div
     const renderClockDiv = () => {
         const div = document.querySelector("div.main")
         div.innerHTML = `<h1 id="clock"></h1>`
@@ -548,6 +548,12 @@ document.addEventListener("DOMContentLoaded", (e) => {
         
     }
 
+
+    // const getMorning 
+
+
+
+// ANCHOR GAME
     const addGameScript = () => {
         const script = document.createElement("script")
         script.src ="./js/game_script.js"
@@ -672,7 +678,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
             message.innerHTML = 'Well done!';
             scoreDisplay.innerHTML = score
             let timer = document.querySelector("span#time")
-            timer.innerHTML = `<div style="display:inline-block;border:3px solid rgb(116, 198, 65);border-radius:5px;padding:10px;background:linear-gradient(to bottom,rgb(123, 222, 90),rgb(101, 243, 103));color:">Dismiss Alarm</div>`
+            timer.innerHTML = `<div id="dismissAlarmBtn" style="display:inline-block;border:3px solid rgb(116, 198, 65);border-radius:5px;padding:10px;background:linear-gradient(to bottom,rgb(123, 222, 90),rgb(101, 243, 103));color:">Dismiss Alarm</div>`
             myStopFunction()
             return false;
         } else if (wordInput.value === currentWord.innerHTML) {
@@ -711,7 +717,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
 
 
-
+// ANCHOR function calls
     // currentTime();
     clickHandler()
     submitHandler()

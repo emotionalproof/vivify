@@ -25,3 +25,18 @@ body {
     background-color: #e9ecef;
     border-radius: 5.3rem;
 }
+
+.set-wake-up-time-form {
+    width: 100%;
+    max-width: 395px;
+    padding: 41px;
+    margin: auto;
+    border-style: inset;
+}
+
+.alarm-set {
+    width: 80%;
+    text-align: center;
+}
+
+
